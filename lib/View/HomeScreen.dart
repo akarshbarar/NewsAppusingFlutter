@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,19 +34,29 @@ class _HomeScreenState extends State<HomeScreen> {
                     return ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                Image.network(
-                                  snapshot.data![index]["urlToImage"],
-                                ),
-                                Text(
-                                  snapshot.data![index]["title"],
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                Text(snapshot.data![index]["description"])
-                              ],
+                          return GestureDetector(
+                            onTap: () async {
+                              // We will Open Browser for the url
+                              var _url = snapshot.data![index]["url"];
+                              // await canLaunch(_url)
+                              // ?
+                              await launch(_url);
+                              // : throw 'Could not launch $_url';
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Image.network(
+                                    snapshot.data![index]["urlToImage"],
+                                  ),
+                                  Text(
+                                    snapshot.data![index]["title"],
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Text(snapshot.data![index]["description"])
+                                ],
+                              ),
                             ),
                           );
                         });
